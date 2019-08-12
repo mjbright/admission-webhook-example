@@ -13,10 +13,19 @@ webhooks:
         path: "/validate"
       caBundle: ${CA_BUNDLE}
     rules:
+
+      # Rules as per Banzai Cloud example: ------------
       - operations: [ "CREATE" ]
         apiGroups: ["apps", ""]
         apiVersions: ["v1"]
         resources: ["deployments","services"]
+
+      # Rules to see EVERY REQUEST: ------------
+      - operations: [ "*" ]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["*"]
+
     namespaceSelector:
       matchLabels:
         admission-webhook-example: enabled

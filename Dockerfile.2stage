@@ -34,9 +34,6 @@ RUN ls -al /admission-webhook-example
 
 ENTRYPOINT ["/admission-webhook-example"]
 
-RUN pwd
-RUN ls ./
-
 #______________________________________________________________________
 #
 #

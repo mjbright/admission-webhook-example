@@ -1,5 +1,8 @@
 # Kubernetes Admission Webhook example
 
+# NOTE: Derived from BanzaiCloud blog post / code (itself derived)
+Blog post (https://banzaicloud.com/blog/k8s-admission-webhooks/).
+
 This tutoral shows how to build and deploy an [AdmissionWebhook](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#admission-webhooks).
 
 The Kubernetes [documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) contains a common set of recommended labels that allows tools to work interoperably, describing objects in a common manner that all tools can understand. In addition to supporting tooling, the recommended labels describe applications in a way that can be queried.

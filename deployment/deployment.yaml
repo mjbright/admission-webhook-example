@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: admission-webhook-example
-          image: martonsereg/admission-webhook-example:v1
+          #image: martonsereg/admission-webhook-example:v1
+          image: mjbright/admission-webhook-example:v1
           imagePullPolicy: Always
           args:
             - -tlsCertFile=/etc/webhook/certs/cert.pem

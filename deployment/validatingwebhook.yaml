@@ -24,7 +24,8 @@ webhooks:
       - operations: [ "*" ]
         apiGroups: ["*"]
         apiVersions: ["*"]
-        resources: ["*"]
+        resources: ["deployments","services"]
+        #resources: ["*"]
 
     namespaceSelector:
       matchLabels:

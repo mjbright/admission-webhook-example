@@ -1,10 +1,24 @@
 #!/bin/bash
 
 : ${DOCKER_USER:? required}
+APP="admission-webhook-example"
 
+REPO="${DOCKER_USER}/${APP}"
+TAG="v1"
+
+IMAGE=${REPO}:${TAG}
+
+echo; echo "---- Building application ${APP} ..."
 dep ensure -v
-CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o admission-webhook-example 
-docker build --no-cache -t ${DOCKER_USER}/admission-webhook-example:v1 .
-rm -rf admission-webhook-example
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ${APP} 
+ls -al ${APP}
 
-docker push ${DOCKER_USER}/admission-webhook-example:v1
+echo; echo "---- Building image ${IMAGE} ..."
+docker build --no-cache -t ${IMAGE} .
+#docker build -t ${IMAGE} .
+# rm -rf ${APP}
+
+echo; echo "---- Pushing  image ${IMAGE} ..."
+docker push ${IMAGE}
+
+

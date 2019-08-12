@@ -1,0 +1,53 @@
+# build stage
+#FROM golang:1.11.2-alpine3.8 AS builder-env
+#FROM alpine:latest AS builder-env
+FROM golang:latest AS builder-env
+
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+
+ADD https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 /usr/bin/dep
+RUN chmod +x /usr/bin/dep
+
+ENV GOPATH=/go
+
+RUN mkdir -p $GOPATH/src/github/mtp/myproj
+WORKDIR  $GOPATH/src/github/mtp/myproj
+
+COPY Gopkg.toml Gopkg.lock ./
+
+RUN which dep
+RUN which go
+#RUN dep init
+RUN dep ensure --vendor-only
+
+COPY . ./
+
+RUN cat Gopkg.toml
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /mybinary .
+
+FROM alpine:latest
+#RUN mkdir /data
+
+COPY --from=builder-env mybinary /admission-webhook-example
+RUN ls -al /admission-webhook-example
+
+ENTRYPOINT ["/admission-webhook-example"]
+
+RUN pwd
+RUN ls ./
+
+#______________________________________________________________________
+#
+#
+#
+#CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ${APP}
+#
+#
+#
+#
+#FROM alpine:latest
+#
+#ADD admission-webhook-example /admission-webhook-example
+##ADD . /admission-webhook-example
+#ENTRYPOINT ["./admission-webhook-example"]

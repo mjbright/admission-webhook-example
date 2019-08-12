@@ -3,6 +3,14 @@
 NS=default
 EXAMPLE="admission-webhook-example"
 
+echo; echo "---- Deploying patched validatingwebhook deployment && service:"
+kubectl create -f deployment/deployment.yaml
+kubectl create -f deployment/service.yaml
+
+#kubectl get all | grep -i admission
+kubectl get deploy,pods,rs,svc,ValidatingWebhookConfiguration,MutatingWebhookConfiguration | grep -E "webhook|sleep"
+
+
 echo; echo "---- Creating patched validatingwebhook config:"
 cat deployment/validatingwebhook.yaml | deployment/webhook-patch-ca-bundle.sh > deployment/validatingwebhook-patched.yaml
 
@@ -19,4 +27,5 @@ kubectl get namespace $NS --show-labels
 echo; echo "---- Creating validating webhook object"
 kubectl create -f deployment/validatingwebhook-patched.yaml
 
+kubectl get deploy,pods,rs,svc,ValidatingWebhookConfiguration,MutatingWebhookConfiguration | grep -E "webhook|sleep"
 

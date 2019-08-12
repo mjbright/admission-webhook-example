@@ -195,6 +195,13 @@ func (whsvr *WebhookServer) validate(ar *v1beta1.AdmissionReview) *v1beta1.Admis
 	glog.Infof("AdmissionReview for Kind=%v, Namespace=%v Name=%v (%v) UID=%v patchOperation=%v UserInfo=%v",
 		req.Kind, req.Namespace, req.Name, resourceName, req.UID, req.Operation, req.UserInfo)
 
+	if (req.Operation == "DELETE") {
+		glog.Infof("Skipping validation for %s operation", req.Operation)
+		return &v1beta1.AdmissionResponse{
+			Allowed: true,
+		}
+	}
+
 	switch req.Kind.Kind {
 	case "Deployment":
 		var deployment appsv1.Deployment
